@@ -15,7 +15,17 @@ const couponSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  user: [mongoose.Schema.Types.ObjectId],
+  user: {
+    Id:{
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    },
+    paymentId:{
+      type: mongoose.Schema.Types.ObjectId,
+      required: true
+    }
+  }
+    
 });
 
 const Coupons = mongoose.model("Coupon", couponSchema);
