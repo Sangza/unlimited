@@ -71,7 +71,10 @@ router.get("/getcoupon", auth, async (req, res) => {
     const userId = req.body.userId;
     if (!userId) return res.status(400).send("Put an Id");
 
-    const userCoupon = await Coupons.find({ user: userId, paidfor: true });
+    const userCoupon = await Coupons.find({
+      user: { Id: userId },
+      paidfor: true,
+    });
     if (!userCoupon.length) return res.status(400).send("no coupon found");
 
     res.status(200).json(userCoupon);
@@ -79,6 +82,49 @@ router.get("/getcoupon", auth, async (req, res) => {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
+});
+
+//get an unpaid Coupon
+route.get("/getuppaid", async (req, res) => {
+  try {
+    const coupon = await Coupons.findOne({
+      duration: req.body.duration,
+      paidfor: false,
+    });
+    if (!coupon) return res.status(200).send("Not Found");
+    res.status(200).json({
+      id: this._id,
+      duration: coupon.duration,
+    });
+  } catch (error) {}
+});
+
+//update coupon status
+router.put("/updatecoupon/:id", async (req, res) => {
+  const couponId = await Coupons.findById(req.params.id);
+  if (!couponId) return res.status(400).send("Not Found");
+
+  const coup = await Coupons.updateOne(
+    { _id: req.params.id },
+    {
+      $set: {
+        paidfor: req.body.paidfor,
+        user: {
+          Id: req.body.userId,
+          paymentId: req.body.paymentId,
+        },
+      },
+    },
+    {
+      new: true,
+    }
+  );
+
+  res.status(200).json({
+    coupon: couponId.coupon,
+    duration: couponId.duration,
+    coup,
+  });
 });
 
 module.exports = router;

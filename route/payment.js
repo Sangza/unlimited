@@ -45,9 +45,9 @@ router.get("/", admin, auth, async (req, res) => {
 });
 
 //get all the payment  amount for a particular user;
-router.get("/getpayment", async (req, res) => {
+router.get("/getpayment/:id", async (req, res) => {
   try {
-    const userId = req.query.userId;
+    const userId = req.params.userId;
     if (!userId) res.status(400).send("UserId not found");
 
     const payment = await Payments.find({ user: userId });

@@ -16,16 +16,13 @@ const couponSchema = new mongoose.Schema({
     required: true,
   },
   user: {
-    Id:{
+    Id: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true
     },
-    paymentId:{
+    paymentId: {
       type: mongoose.Schema.Types.ObjectId,
-      required: true
-    }
-  }
-    
+    },
+  },
 });
 
 const Coupons = mongoose.model("Coupon", couponSchema);
