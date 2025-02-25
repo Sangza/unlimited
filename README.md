@@ -64,13 +64,15 @@ Upload multiple coupons in a single request.
             "coupon": "CODE1",
             "hostel": "hostel1",
             "paidfor": "service1",
-            "duration": 30
+            "duration": 30,
+            "amount": 4000
         },
         {
             "coupon": "CODE2",
             "hostel": "hostel2",
             "paidfor": "service2",
-            "duration": 60
+            "duration": 60,
+            "amount": 4000
         }
     ]
 }
