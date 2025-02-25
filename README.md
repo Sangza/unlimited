@@ -23,7 +23,8 @@ Create a single coupon in the system.
 "coupon": "SUMMER2024",
 "hostel": "hostel_id",
 "paidfor": "service_name",
-"duration": 30
+"duration": 30,
+"amount":4000
 }
 ```
 - **Success Response**: 
