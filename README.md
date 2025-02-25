@@ -40,6 +40,7 @@ Create a single coupon in the system.
 "hostel": "hostel_id",
 "paidfor": "service_name",
 "duration": 30,
+"amount": 4000
 "createdAt": "2024-03-20T10:00:00.000Z"
 }
 }
