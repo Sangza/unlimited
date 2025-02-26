@@ -5,7 +5,7 @@ const paymentSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Users",
       required: true,
     },
     amount: {
@@ -31,4 +31,4 @@ const paymentSchema = mongoose.Schema(
 
 const Payments = new mongoose.model("Payment", paymentSchema);
 
-module.exports = Payments;
+exports.Payments = Payments;

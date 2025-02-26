@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const { Coupons } = require("../model/coupon");
 const auth = require("../middlewares/auth");
 const admin = require("../middlewares/admin");
-const { route } = require("./user");
+const { Users } = require("../model/user");
 
 router.post("/", auth, admin, async (req, res) => {
   const couponn = await Coupons.findOne({ coupon: req.body.coupon });
@@ -15,6 +15,7 @@ router.post("/", auth, admin, async (req, res) => {
     hostel: req.body.hostel,
     paidfor: req.body.paidfor,
     duration: req.body.duration,
+    amount: req.body.amount,
   });
 
   try {
@@ -52,6 +53,7 @@ router.post("/batch", auth, admin, async (req, res) => {
       hostel: couponData.hostel,
       paidfor: couponData.paidfor,
       duration: couponData.duration,
+      amount: couponData.amount,
     }));
 
     const result = await Coupons.insertMany(couponsToInsert);
@@ -65,16 +67,14 @@ router.post("/batch", auth, admin, async (req, res) => {
   }
 });
 
-//coupon paid by a particular user
+//coupons paid by a particular user
 router.get("/getcoupon", auth, async (req, res) => {
   try {
-    const userId = req.body.userId;
-    if (!userId) return res.status(400).send("Put an Id");
+    const userId = await Users.findById({ _id: req.body.userId });
+    if (!userId) return res.status(400).send("user doesn't exist");
 
-    const userCoupon = await Coupons.find({
-      user: { Id: userId },
-      paidfor: true,
-    });
+    const userCoupon = await Coupons.find({ "user.Id": req.body.userId });
+    console.log(userId);
     if (!userCoupon.length) return res.status(400).send("no coupon found");
 
     res.status(200).json(userCoupon);
@@ -85,22 +85,19 @@ router.get("/getcoupon", auth, async (req, res) => {
 });
 
 //get an unpaid Coupon
-route.get("/getuppaid", async (req, res) => {
+router.get("/getuppaid/:duration", async (req, res) => {
   try {
     const coupon = await Coupons.findOne({
-      duration: req.body.duration,
+      duration: req.params.duration,
       paidfor: false,
     });
     if (!coupon) return res.status(200).send("Not Found");
-    res.status(200).json({
-      id: this._id,
-      duration: coupon.duration,
-    });
+    res.status(200).json(coupon);
   } catch (error) {}
 });
 
 //update coupon status
-router.put("/updatecoupon/:id", async (req, res) => {
+router.put("/updatecoupon/:id", auth, async (req, res) => {
   const couponId = await Coupons.findById(req.params.id);
   if (!couponId) return res.status(400).send("Not Found");
 
