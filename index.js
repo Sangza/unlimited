@@ -22,6 +22,6 @@ app.use("/api/payment", payment);
 
 mongoose.connect("mongodb://localhost/unlimited").then(() => {
   console.log("Connecting to Mongodb");
-  const port = process.env.Port || 3002;
+  const port = process.env.Port || 3000;
   app.listen(port, () => console.log("connecting to localhost", port));
-});
+})

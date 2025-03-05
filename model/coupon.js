@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const { Users } = require("./user");
 const { ref } = require("joi");
+const {paymentSchema} = require('./payment')
 
 const couponSchema = new mongoose.Schema({
   coupon: {
@@ -25,10 +26,7 @@ const couponSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    paymentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Payments",
-    },
+    paymentId: [paymentSchema]
   },
   purchase: {
     type: Date,

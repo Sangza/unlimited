@@ -68,16 +68,16 @@ router.post("/batch", auth, admin, async (req, res) => {
 });
 
 //coupons paid by a particular user
-router.get("/getcoupon", auth, async (req, res) => {
+router.get("/getcoupon/:id", auth, async (req, res) => {
   try {
-    const userId = await Users.findById({ _id: req.body.userId });
+    const userId = await Users.findById({ _id: req.params.id });
     if (!userId) return res.status(400).send("user doesn't exist");
 
-    const userCoupon = await Coupons.find({ "user.Id": req.body.userId });
+    const userCoupon = await Coupons.find({ "user.Id": req.params.id });
     console.log(userId);
     if (!userCoupon.length) return res.status(400).send("no coupon found");
 
-    res.status(200).json(userCoupon);
+    res.status(200).send(userCoupon);
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -85,7 +85,7 @@ router.get("/getcoupon", auth, async (req, res) => {
 });
 
 //get an unpaid Coupon
-router.get("/getuppaid/:duration", async (req, res) => {
+router.get("/getunpaid/:duration", async (req, res) => {
   try {
     const coupon = await Coupons.findOne({
       duration: req.params.duration,
@@ -94,7 +94,7 @@ router.get("/getuppaid/:duration", async (req, res) => {
     if (!coupon) return res.status(200).send("Not Found");
     res.status(200).json(coupon);
   } catch (error) {}
-});
+}); 
 
 //update coupon status
 router.put("/updatecoupon/:id", auth, async (req, res) => {
