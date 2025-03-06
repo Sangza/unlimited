@@ -21,8 +21,10 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-  useNewUrlParser: true,
-  useUnifiedTopology: true
+  ssl: true,
+  tls: true,
+  tlsCAFile: require('path').join(process.cwd(), 'rds-combined-ca-bundle.pem'), // Only if you have this file
+  minTLSVersion: 'TLSv1.2'
 });
 
 app.use(express.json());
