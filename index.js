@@ -23,10 +23,7 @@ const client = new MongoClient(uri, {
   },
   useNewUrlParser: true,
   useUnifiedTopology: true,
-  ssl: true,
-  sslValidate: true,
-  tls: true,
-  tlsAllowInvalidCertificates: false
+  tls: true
 });
 
 app.use(express.json());
