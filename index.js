@@ -22,8 +22,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
   useNewUrlParser: true,
-  useUnifiedTopology: true,
-  tls: true
+  useUnifiedTopology: true
 });
 
 app.use(express.json());
