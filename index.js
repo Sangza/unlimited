@@ -31,11 +31,11 @@ app.use("/api/auth", auth);
 app.use("/api/coupon", coupon);
 app.use("/api/payment", payment);
 
-mongoose.connect("mongodb://localhost/unlimited").then(() => {
-  console.log("Connecting to Mongodb");
-  const port = process.env.Port || 3000;
-  app.listen(port, () => console.log("connecting to localhost", port));
-})
+// mongoose.connect("mongodb://localhost/unlimited").then(() => {
+//   console.log("Connecting to Mongodb");
+//   const port = process.env.Port || 3000;
+//   app.listen(port, () => console.log("connecting to localhost", port));
+// })
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 
