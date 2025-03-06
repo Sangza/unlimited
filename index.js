@@ -21,7 +21,12 @@ const client = new MongoClient(uri, {
     strict: true,
     deprecationErrors: true,
   },
-  tls: true
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  ssl: true,
+  sslValidate: true,
+  tls: true,
+  tlsAllowInvalidCertificates: false
 });
 
 app.use(express.json());
