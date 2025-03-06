@@ -23,7 +23,6 @@ const client = new MongoClient(uri, {
   },
   ssl: true,
   tls: true,
-  minVersion: 'TLSv1.2', // Enforce TLS 1.2
 });
 
 
