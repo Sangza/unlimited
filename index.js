@@ -42,9 +42,11 @@ app.use("/api/payment", payment);
 async function run() {
   try {
     // Connect to MongoDB
-    await client.connect();
+    await client.connect().then(()=>{
+      console.log("✅ Successfully connected to MongoDB!");
+    })
     await client.db("admin").command({ ping: 1 });
-    console.log("✅ Successfully connected to MongoDB!");
+    
 
     // Start the server
     const port = process.env.PORT || 3000;
