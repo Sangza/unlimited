@@ -34,23 +34,19 @@ app.use("/api/auth", auth);
 app.use("/api/coupon", coupon);
 app.use("/api/payment", payment);
 
-// mongoose.connect("mongodb://localhost/unlimited").then(() => {
-//   console.log("Connecting to Mongodb");
-//   const port = process.env.Port || 3000;
-//   app.listen(port, () => console.log("connecting to localhost", port));
-// })
+mongoose.connect("mongodb://localhost/unlimited").then(() => {
+  console.log("Connecting to Mongodb");
+})
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
-
 async function run() {
   try {
-    // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
-    // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    const port = process.env.PORT || 3000;
+    app.listen(port, () => console.log("connecting to localhost", port));
   } finally {
-    // Ensures that the client will close when you finish/error
     await client.close();
   }
 }
