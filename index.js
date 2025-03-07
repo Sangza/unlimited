@@ -14,8 +14,6 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-
-
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
