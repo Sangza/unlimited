@@ -34,9 +34,9 @@ app.use("/api/auth", auth);
 app.use("/api/coupon", coupon);
 app.use("/api/payment", payment);
 
-mongoose.connect("mongodb://localhost/unlimited").then(() => {
-  console.log("Connecting to Mongodb");
-})
+// mongoose.connect("mongodb://localhost/unlimited").then(() => {
+//   console.log("Connecting to Mongodb");
+// })
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 async function run() {
