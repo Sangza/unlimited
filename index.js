@@ -44,16 +44,13 @@ async function run() {
     // Connect to MongoDB
     await client.connect().then(()=>{
       console.log("✅ Successfully connected to MongoDB!");
+      const port = process.env.PORT || 3000;
+      app.listen(port, () => {
+        console.log(`🚀 Server is listening on port ${port}`);
+      });
     })
     await client.db("admin").command({ ping: 1 });
-    
-
-    // Start the server
-    const port = process.env.PORT || 3000;
-    app.listen(port, () => {
-      console.log(`🚀 Server is listening on port ${port}`);
-    });
-  } catch (error) {
+    } catch (error) {
     console.error("❌ Error connecting to MongoDB:", error);
     process.exit(1); // Exit if unable to connect to the database
   }
