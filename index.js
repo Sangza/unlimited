@@ -7,8 +7,6 @@ const user = require("./route/user");
 const coupon = require("./route/coupon");
 const payment = require("./route/payment");
 const dotenv = require("dotenv")
-// const { MongoClient, ServerApiVersion } = require('mongodb');
-
 dotenv.config()
 
 if (!config.get("jwtPrivateKey")) {
@@ -16,15 +14,6 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
-// const client = new MongoClient(process.env.MONGO_URI, {
-//   serverApi: {
-//     version: ServerApiVersion.v1,
-//     strict: true,
-//     deprecationErrors: true,
-//   },
-//   ssl: true,
-//   tls: true,
-// });
 
 
 app.use(express.json());
@@ -35,7 +24,6 @@ app.use("/api/auth", auth);
 app.use("/api/coupon", coupon);
 app.use("/api/payment", payment);
 
-// await client.connect()
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
 async function run() {

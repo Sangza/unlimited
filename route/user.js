@@ -13,7 +13,7 @@ router.post("/", async (req, res) => {
   const { error } = validateUser(req.body);
   if (error) return res.status(400).send(error.details[0].message);
 
-  let user = await Users.find({ email: req.body.email });
+  let user = await Users.findOne({ email: req.body.email });
   if (user) return res.status(400).send("Please this email already exist");
 
   user = new Users({
