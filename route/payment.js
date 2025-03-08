@@ -51,9 +51,7 @@ router.get("/getpayment/:id", async (req, res) => {
     if (!userId) res.status(400).send("UserId not found");
 
     const payment = await Payments.find({ user: userId });
-    if (!payment.length) return res.status(400).json({
-      totalAmount: 0
-    });
+    if (!payment.length) return res.status(400).send("No payment yet");
 
     let totalAmount = payment.reduce((sum, payment) => sum + payment.amount, 0);
     res.status(200).json({ totalAmount });

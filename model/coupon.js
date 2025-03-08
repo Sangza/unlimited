@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 const { Users } = require("./user");
 const { ref } = require("joi");
-const {paymentSchema} = require('./payment')
+const {paymentSchema} = require('./payment');
+const {priceSchema} = require('./price');
+
 
 const couponSchema = new mongoose.Schema({
   coupon: {
     type: String,
     required: true,
   },
-  hostel: {
-    type: String,
-    required: true,
-  },
+  spot: [mongoose.Schema.Types.ObjectId],
+  price:[priceSchema],
   paidfor: Boolean,
   duration: {
     type: String,
@@ -20,6 +20,9 @@ const couponSchema = new mongoose.Schema({
   amount: {
     type: Number,
     required: true,
+  },
+  createdBy:{
+   type: Date
   },
   user: {
     Id: {

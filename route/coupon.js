@@ -12,7 +12,7 @@ router.post("/", auth, admin, async (req, res) => {
 
   let coupon = new Coupons({
     coupon: req.body.coupon,
-    hostel: req.body.hostel,
+    owner: req.body.hostel,
     paidfor: req.body.paidfor,
     duration: req.body.duration,
     amount: req.body.amount,
@@ -50,7 +50,7 @@ router.post("/batch", auth, admin, async (req, res) => {
 
     const couponsToInsert = req.body.coupons.map((couponData) => ({
       coupon: couponData.coupon,
-      hostel: couponData.hostel,
+      owner: couponData.hostel,
       paidfor: couponData.paidfor,
       duration: couponData.duration,
       amount: couponData.amount,
