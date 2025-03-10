@@ -37,5 +37,19 @@ router.post("/", async (req, res) => {
     .header("x-auth-token", token)
     .send(_.pick(user, ["email", "username", "currentclass,currentroom"]));
 });
+router.put("/:id", auth, async (req, res) => {
+  const user = await Users.findOne({ _id: req.params.id });
+  if (user) return res.status(400).send("Please this email already exist");
+
+  const updateUser = await Users.updateOne({ _id: req.params.id, email: req.body.email }, {
+    $set: {
+      username: req.body.username,
+      password: req.body.password,
+      currentclass: req.body.currentclass,
+      currentroom: req.body.currentroom,
+      isAdmin: req.body.isAdmin,
+    }
+  })
+})
 
 module.exports = router;

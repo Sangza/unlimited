@@ -44,6 +44,9 @@ router.get("/", admin, auth, async (req, res) => {
   }
 });
 
+//get all payment made to a spot 
+router.get('/', admin, auth, async(req.res))
+
 //get all the payment  amount for a particular user;
 router.get("/getpayment/:id", async (req, res) => {
   try {

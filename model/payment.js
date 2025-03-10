@@ -1,5 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const { Users } = require("./user");
+const { Spots } = require("../model/spot")
 
 const paymentSchema = mongoose.Schema(
   {
@@ -20,6 +21,10 @@ const paymentSchema = mongoose.Schema(
       type: String,
       unique: true,
       required: true,
+    },
+    spot: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Spots"
     },
     createdAt: {
       type: Date,
