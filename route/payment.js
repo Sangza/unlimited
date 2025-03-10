@@ -17,6 +17,7 @@ router.post("/", auth, async (req, res) => {
     amount: req.body.amount,
     transactionId: req.body.transactionId,
     status: "successful",
+    spot: req.body.spotId
   });
 
   try {
@@ -45,7 +46,21 @@ router.get("/", admin, auth, async (req, res) => {
 });
 
 //get all payment made to a spot 
-router.get('/', admin, auth, async(req.res))
+router.get('/getpayment/:spotId', admin, auth, async (req, res) => {
+  try {
+    const spotId = req.params.spotId;
+    if (!userId) res.status(400).send("UserId not found");
+
+    const payment = await Payments.find({ spot: spotId });
+    if (!payment.length) return res.status(400).send("No payment yet");
+
+    let totalAmount = payment.reduce((sum, payment) => sum + payment.amount, 0);
+    res.status(200).json({ totalAmount });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+})
 
 //get all the payment  amount for a particular user;
 router.get("/getpayment/:id", async (req, res) => {
