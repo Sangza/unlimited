@@ -78,3 +78,5 @@ router.delete('/:id', admin,async(req, res)=>{
         "successfully deleted":price
     })
 })
+
+module.exports = router;
