@@ -38,18 +38,28 @@ router.post("/", async (req, res) => {
     .send(_.pick(user, ["email", "username", "currentclass,currentroom"]));
 });
 router.put("/:id", auth, async (req, res) => {
-  const user = await Users.findOne({ _id: req.params.id });
-  if (user) return res.status(400).send("Please this email already exist");
+  try {
+    const user = await Users.findOne({ _id: req.params.id });
+    if (user) return res.status(400).send("Please this email already exist");
 
-  const updateUser = await Users.updateOne({ _id: req.params.id, email: req.body.email }, {
-    $set: {
-      username: req.body.username,
-      password: req.body.password,
-      currentclass: req.body.currentclass,
-      currentroom: req.body.currentroom,
-      isAdmin: req.body.isAdmin,
-    }
-  })
+    const updateUser = await Users.updateOne({ _id: req.params.id }, {
+      $set: {
+        username: req.body.username,
+        password: req.body.password,
+        currentclass: req.body.currentclass,
+        currentroom: req.body.currentroom,
+        isAdmin: req.body.isAdmin,
+      }
+    },
+      {
+        new: true
+      }
+    )
+    res.status(200).json(updateUser);
+  } catch (error) {
+    res.status(500).send("Internal Server Error: " + error.message);
+  }
+
 })
 
 module.exports = router;
