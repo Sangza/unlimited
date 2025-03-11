@@ -7,6 +7,33 @@ const admin = require("../middlewares/admin");
 const { Users } = require("../model/user");
 const { Spots } = require("../model/spot");
 
+router.post("/", auth, admin, async (req, res) => {
+  try {
+    // Check that the referenced spot exists
+    const spot = await Spots.findById(req.body.spotId);
+    if (!spot) return res.status(400).send("Spot doesn't exist");
+
+    // Check for duplicate coupon code
+    const existingCoupon = await Coupons.findOne({ coupon: req.body.coupon });
+    if (existingCoupon) return res.status(400).send("Coupon already exists");
+
+    // Create new coupon document
+    let coupon = new Coupons({
+      coupon: req.body.coupon,
+      spot: req.body.spotId,
+      paidfor: req.body.paidfor,
+      duration: req.body.duration,
+      amount: req.body.amount,
+    });
+
+    // Save coupon to database
+    await coupon.save();
+    res.status(200).send({ message: "Created successfully" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 router.post("/", auth, admin, async (req, res) => {
   try {
