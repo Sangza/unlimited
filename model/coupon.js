@@ -30,6 +30,10 @@ const couponSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  updatedAT: {
+    type: Date,
+    default: null
+  },
   user: {
     Id: {
       type: mongoose.Schema.Types.ObjectId,
@@ -37,20 +41,11 @@ const couponSchema = new mongoose.Schema({
       default: null, // Ensure it's nullable until assigned
     },
     paymentId: {
-      type: paymentSchema,
-      default: null, // Default to empty array
+      type: mongoose.Schema.Types.ObjectId
     },
   },
 });
 
-// Add a partial index that only enforces uniqueness when transactionId is not null
-couponSchema.index(
-  { "user.paymentId.transactionId": 1 },
-  {
-    unique: true,
-    partialFilterExpression: { "user.paymentId.transactionId": { $exists: true, $ne: null } }
-  }
-);
 
 const Coupons = mongoose.model("Coupon", couponSchema);
 
