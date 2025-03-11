@@ -34,14 +34,21 @@ const couponSchema = new mongoose.Schema({
     Id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      default: null, // Ensure it's nullable until assigned
     },
     paymentId: {
       type: paymentSchema,
-      default: null, // Default to empty array
     },
   },
 });
+
+couponSchema.index(
+  { 'user.paymentId.transactionId': 1 },
+  {
+    unique: true,
+    partialFilterExpression: { 'user.paymentId.transactionId': { $exists: true, $ne: null } }
+  }
+);
+
 
 const Coupons = mongoose.model("Coupon", couponSchema);
 
