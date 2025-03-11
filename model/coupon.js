@@ -37,12 +37,9 @@ const couponSchema = new mongoose.Schema({
       default: null, // Ensure it's nullable until assigned
     },
     paymentId: {
-      type: [paymentSchema],
-      default: [], // Default to empty array
+      type: paymentSchema,
+      default: null, // Default to empty array
     },
-  },
-  purchase: {
-    type: Date,
   },
 });
 
