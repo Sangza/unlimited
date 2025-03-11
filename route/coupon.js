@@ -18,7 +18,7 @@ router.post("/", auth, admin, async (req, res) => {
 
   let coupon = new Coupons({
     coupon: req.body.coupon,
-    owner: req.body.spotId,
+    spot: req.body.spotId,
     paidfor: req.body.paidfor,
     duration: req.body.duration,
     amount: req.body.amount,
