@@ -7,14 +7,12 @@ const { Users } = require('../model/user')
 
 
 router.post("/:id", auth, admin, async (req, res) => {
-   const user = await Users.findById({
-      _id: req.params.id,
-      isAdmin: true
-   })
+   const user = await Users.findOne({ _id: req.params.id, isAdmin: true });
+
    if (!user) res.status(400).send('User not found or not an admin');
 
    let spot = await Spots.findOne({ name: req.body.name });
-   if (spot) return res.status(400).send('name already exist pick another')
+   if (spot) return res.status(400).send('Name already exists, pick another');
 
 
    spot = new Spots({
