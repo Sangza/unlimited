@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 const { Users } = require("./user");
 const { Spots } = require("../model/spot");
+const couponSchema = require("./coupon");
 
 const paymentSchema = mongoose.Schema(
   {
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
+    },
+    coupon: {
+      type: couponSchema
     },
     amount: {
       type: Number,
@@ -16,9 +20,6 @@ const paymentSchema = mongoose.Schema(
       enum: ["pending", "successful", "failed"],
       default: "pending",
     },
-    transactionId: {
-      type: String,
-    },
     spot: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Spots"
@@ -27,6 +28,7 @@ const paymentSchema = mongoose.Schema(
       type: Date,
       default: Date.now(),
     },
+
   },
   { timestamps: true }
 );

@@ -33,15 +33,6 @@ const couponSchema = new mongoose.Schema({
     type: Date,
     default: Date.now
   },
-  user: {
-    Id: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Users",
-    },
-    paymentId: {
-      type: mongoose.Schema.Types.ObjectId
-    },
-  },
 });
 
 

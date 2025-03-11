@@ -22,10 +22,6 @@ router.post("/", auth, admin, async (req, res) => {
     paidfor: req.body.paidfor,
     duration: req.body.duration,
     amount: req.body.amount,
-    user: {
-      Id: req.body.adminId,
-      paymentId: req.body.adminId
-    }
   });
 
 
