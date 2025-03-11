@@ -7,15 +7,15 @@ const auth = require('../middlewares/auth');
 const { set } = require('mongoose');
 
 //post a price for a particular spot.
-router.post("/", admin, async (req, res) => {
+router.post("/:id", admin, async (req, res) => {
     try {
-        const spot = await Spots.findById({ _id: req.body.spotId })
+        const spot = await Spots.findById({ _id: req.params.spotId })
         if (!spot) return res.status(400).send("spot doesn't exist");
 
         let price = new Prices({
             duration: req.body.duration,
             amount: req.body.amount,
-            spot: req.body.spotId
+            spot: req.params.spotId
         })
 
         await price.save()
