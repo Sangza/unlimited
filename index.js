@@ -6,6 +6,8 @@ const auth = require("./route/auth");
 const user = require("./route/user");
 const coupon = require("./route/coupon");
 const payment = require("./route/payment");
+const spot = require('./route/spot');
+const price = require('./route/price');
 const dotenv = require("dotenv")
 dotenv.config()
 
@@ -21,6 +23,8 @@ app.use("/api/user", user);
 app.use("/api/auth", auth);
 app.use("/api/coupon", coupon);
 app.use("/api/payment", payment);
+app.use("/api/spot", spot);
+app.use("/api/price", price);
 
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -28,7 +32,7 @@ async function run() {
   try {
     // Connect to MongoDB
     console.log(process.env.MONGO_URI)
-    mongoose.connect(process.env.MONGO_URI).then(()=>{
+    mongoose.connect(process.env.MONGO_URI).then(() => {
       console.log("✅ Successfully connected to MongoDB!");
       const port = process.env.PORT || 3000;
       app.listen(port, () => {
@@ -36,7 +40,7 @@ async function run() {
       });
     })
     // await client.db("admin").command({ ping: 1 });
-    } catch (error) {
+  } catch (error) {
     console.error("❌ Error connecting to MongoDB:", error);
     process.exit(1); // Exit if unable to connect to the database
   }
