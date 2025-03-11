@@ -22,6 +22,10 @@ router.post("/", auth, admin, async (req, res) => {
     paidfor: req.body.paidfor,
     duration: req.body.duration,
     amount: req.body.amount,
+    user: {
+      Id: req.body.adminId,
+      paymentId: req.body.adminId
+    }
   });
 
 
@@ -123,6 +127,7 @@ router.put("/updatecoupon/:id", auth, async (req, res) => {
     { _id: req.params.id },
     {
       $set: {
+        updatedAT: req.body.update,
         paidfor: req.body.paidfor,
         user: {
           Id: req.body.userId,

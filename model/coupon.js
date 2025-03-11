@@ -31,6 +31,7 @@ const couponSchema = new mongoose.Schema({
   },
   updatedAT: {
     type: Date,
+    default: Date.now
   },
   user: {
     Id: {
