@@ -11,15 +11,13 @@ router.post("/", admin, async (req, res) => {
     const spot = await Spots.findById({ _id: req.body.spotId })
     if (!spot) return res.status(400).send("spot doesn't exist");
 
-    let price;
-
-    price = new Prices({
+    let price = new Prices({
         duration: req.body.duration,
         amount: req.body.amount,
         spot: req.body.spotId
     })
 
-    price.save()
+    await price.save()
     res.status(200).send(price);
 })
 
