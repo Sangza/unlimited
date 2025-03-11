@@ -18,8 +18,6 @@ const paymentSchema = mongoose.Schema(
     },
     transactionId: {
       type: String,
-      default: null,
-      // Removed any unique constraint that might exist here
     },
     spot: {
       type: mongoose.Schema.Types.ObjectId,
@@ -32,9 +30,6 @@ const paymentSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// We don't add any unique index on transactionId in the payment schema
-// This avoids uniqueness issues in the embedded document
 
 const Payments = mongoose.model("Payment", paymentSchema);
 

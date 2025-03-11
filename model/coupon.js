@@ -7,7 +7,6 @@ const couponSchema = new mongoose.Schema({
   coupon: {
     type: String,
     required: true,
-    unique: true, // Ensure uniqueness of coupon codes
   },
   spot: {
     type: mongoose.Schema.Types.ObjectId,
@@ -32,13 +31,11 @@ const couponSchema = new mongoose.Schema({
   },
   updatedAT: {
     type: Date,
-    default: null
   },
   user: {
     Id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      default: null, // Ensure it's nullable until assigned
     },
     paymentId: {
       type: mongoose.Schema.Types.ObjectId
