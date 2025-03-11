@@ -24,14 +24,11 @@ router.post("/", auth, admin, async (req, res) => {
     amount: req.body.amount,
   });
 
-  try {
-    const coupons = await coupon.save();
-    res.status(200).send({
-      message: "created successfully",
-    });
-  } catch (error) {
-    res.status(400).send(error.details[0].message);
-  }
+
+  const coupons = await coupon.save();
+  res.status(200).send({
+    message: "created successfully",
+  });
 });
 
 router.post("/batch", auth, admin, async (req, res) => {
