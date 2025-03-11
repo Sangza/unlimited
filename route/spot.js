@@ -21,8 +21,8 @@ router.post("/:id", auth, admin, async (req, res) => {
       source: req.body.source
    })
 
-   const spots = await spot.save();
-   res.status(200).json(
+   await spot.save();
+   res.status(200).send(
       "spot created successfully", spots
    )
 
