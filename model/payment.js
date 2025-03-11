@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
-const { Users } = require("./user");
-const { Spots } = require("../model/spot");
-const couponSchema = require("./coupon");
+const couponSchema = require("../model/coupon");
 
 const paymentSchema = mongoose.Schema(
   {
