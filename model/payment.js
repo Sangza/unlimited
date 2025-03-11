@@ -18,7 +18,7 @@ const paymentSchema = mongoose.Schema(
     },
     transactionId: {
       type: String,
-      unique: true,
+      default: null
 
     },
     spot: {
