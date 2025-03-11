@@ -3,12 +3,11 @@ const router = express.Router();
 const { Spots } = require('../model/spot');
 const { auth } = require('../middlewares/auth');
 const { admin } = require('../middlewares/admin');
-const { Users } = require('../model/user')
+const { Users } = require('../model/user');
 
 
 router.post("/:id", auth, admin, async (req, res) => {
    const user = await Users.findOne({ _id: req.params.id, isAdmin: true });
-
    if (!user) res.status(400).send('User not found or not an admin');
 
    let spot = await Spots.findOne({ name: req.body.name });
