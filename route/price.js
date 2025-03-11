@@ -9,13 +9,13 @@ const { set } = require('mongoose');
 //post a price for a particular spot.
 router.post("/:id", auth, admin, async (req, res) => {
     try {
-        const spot = await Spots.findById({ _id: req.params.spotId })
+        const spot = await Spots.findById({ _id: req.params.id })
         if (!spot) return res.status(400).send("spot doesn't exist");
 
         let price = new Prices({
             duration: req.body.duration,
             amount: req.body.amount,
-            spot: req.params.spotId
+            spot: req.params.id
         })
 
         await price.save()
