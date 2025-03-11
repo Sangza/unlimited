@@ -5,16 +5,16 @@ const { Coupons } = require("../model/coupon");
 const auth = require("../middlewares/auth");
 const admin = require("../middlewares/admin");
 const { Users } = require("../model/user");
-const {Spots} = require("../model/spot");
+const { Spots } = require("../model/spot");
 
 
 router.post("/", auth, admin, async (req, res) => {
+  const spot = await Spots.findById({ _id: req.body.spotId });
+  if (!spot) return res.status(400).send("spot doesn't exist")
+
+
   const couponn = await Coupons.findOne({ coupon: req.body.coupon });
   if (couponn) return res.status(400).send("Coupon already existed");
-
-
-  const spot = await Spots.findById({_id:req.body.spotId});
-  if(!spot) return res.status(400).send("spot doesn't exist")
 
   let coupon = new Coupons({
     coupon: req.body.coupon,
@@ -30,7 +30,7 @@ router.post("/", auth, admin, async (req, res) => {
       message: "created successfully",
     });
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error.details[0].message);
   }
 });
 
@@ -41,9 +41,9 @@ router.post("/batch", auth, admin, async (req, res) => {
       .send("Request body should contain an array of coupons");
   }
 
-  
-  const spot = await Spots.findById({_id:req.body.spotId});
-  if(!spot) return res.status(400).send("spot doesn't exist")
+
+  const spot = await Spots.findById({ _id: req.body.spotId });
+  if (!spot) return res.status(400).send("spot doesn't exist")
 
   try {
     const couponCodes = req.body.coupons.map((c) => c.coupon);
@@ -80,16 +80,17 @@ router.post("/batch", auth, admin, async (req, res) => {
 //coupons paid by a particular user
 router.get("/getcoupon/:spotId/:id", auth, async (req, res) => {
   try {
-     
-   const spot = await Spots.findById({_id:req.params.spotId});
-  if(!spot) return res.status(400).send("spot doesn't exist")
+
+    const spot = await Spots.findById({ _id: req.params.spotId });
+    if (!spot) return res.status(400).send("spot doesn't exist")
 
     const userId = await Users.findById({ _id: req.params.id });
     if (!userId) return res.status(400).send("user doesn't exist");
 
-    const userCoupon = await Coupons.find({ "user.Id": req.params.id,
-      spot:req.params.spotId
-     });
+    const userCoupon = await Coupons.find({
+      "user.Id": req.params.id,
+      spot: req.params.spotId
+    });
     console.log(userId);
     if (!userCoupon.length) return res.status(400).send("no coupon found");
 
@@ -102,19 +103,19 @@ router.get("/getcoupon/:spotId/:id", auth, async (req, res) => {
 
 //get an unpaid Coupon
 router.get("/getunpaid/:spotId/:duration", async (req, res) => {
-  const spot = await Spots.findById({_id:req.params.spotId});
-  if(!spot) return res.status(400).send("spot doesn't exist")
+  const spot = await Spots.findById({ _id: req.params.spotId });
+  if (!spot) return res.status(400).send("spot doesn't exist")
 
   try {
     const coupon = await Coupons.findOne({
-      spot:req.params.spotId,
+      spot: req.params.spotId,
       duration: req.params.duration,
       paidfor: false,
     });
     if (!coupon) return res.status(200).send("Not Found");
     res.status(200).json(coupon);
-  } catch (error) {}
-}); 
+  } catch (error) { }
+});
 
 //update coupon status
 router.put("/updatecoupon/:id", auth, async (req, res) => {
