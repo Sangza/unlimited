@@ -1,4 +1,4 @@
-const { default: mongoose } = require("mongoose");
+const mongoose = require("mongoose");
 const { Users } = require("./user");
 const { Spots } = require("../model/spot");
 
@@ -18,8 +18,8 @@ const paymentSchema = mongoose.Schema(
     },
     transactionId: {
       type: String,
-      default: null
-
+      default: null,
+      // Removed any unique constraint that might exist here
     },
     spot: {
       type: mongoose.Schema.Types.ObjectId,
@@ -33,7 +33,10 @@ const paymentSchema = mongoose.Schema(
   { timestamps: true }
 );
 
-const Payments = new mongoose.model("Payment", paymentSchema);
+// We don't add any unique index on transactionId in the payment schema
+// This avoids uniqueness issues in the embedded document
+
+const Payments = mongoose.model("Payment", paymentSchema);
 
 exports.Payments = Payments;
 exports.paymentSchema = paymentSchema;
