@@ -1,35 +1,37 @@
 const express = require('express');
 const router = express.Router();
 const { Spots } = require('../model/spot');
-const { auth } = require('../middlewares/auth');
-const { admin } = require('../middlewares/admin');
+const auth = require('../middlewares/auth');
+const admin = require('../middlewares/admin');
 const { Users } = require('../model/user');
 
-
 router.post("/:id", auth, admin, async (req, res) => {
-   const user = await Users.findOne({ _id: req.params.id, isAdmin: true });
-   if (!user) res.status(400).send('User not found or not an admin');
+   try {
+      const user = await Users.findOne({ _id: req.params.id, isAdmin: true });
+      if (!user) return res.status(400).send('User not found or not an admin');
 
-   let spot = await Spots.findOne({ name: req.body.name });
-   if (spot) return res.status(400).send('Name already exists, pick another');
+      let spot = await Spots.findOne({ name: req.body.name });
+      if (spot) return res.status(400).send('Name already exists, pick another');
+
+      spot = new Spots({
+         location: req.body.location,
+         owner: req.params.id,
+         name: req.body.name,
+         source: req.body.source
+      });
+
+      await spot.save();
+      res.status(200).send({ message: "Spot created successfully", spot });
+
+   } catch (error) {
+      res.status(500).send("Internal Server Error: " + error.message);
+   }
+});
 
 
-   spot = new Spots({
-      location: req.body.location,
-      owner: req.params.id,
-      name: req.body.name,
-      source: req.body.source
-   })
-
-   await spot.save();
-   res.status(200).send(
-      "spot created successfully", spots
-   )
-
-})
 
 // get the number of spot of a particular user
-router.get("/getspots/:id", auth, admin, async (req, res) => {
+router.get("/getspots/:id", admin, async (req, res) => {
    try {
       const user = await Users.findById({ _id: req.params.id, isAdmin: true });
       if (!user) return res.status(400).send('User is not an Admin or not found');
@@ -62,7 +64,7 @@ router.get("/search", auth, async (req, res) => {
 });
 
 //find a particular spot by id
-router.get("/:id", async (req, res) => {
+router.get("/:id", auth, async (req, res) => {
    try {
       const spot = await Spots.findById(req.params.id);
       if (!spot) return res.status(404).send("Spot not found");
@@ -74,7 +76,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //update a particular spot
-router.put("/:id", auth, admin, async (req, res) => {
+router.put("/:id", admin, async (req, res) => {
    try {
       const spot = await Spots.findById(req.params.id);
       if (!spot) return res.status(404).send("Spot not found");
@@ -99,7 +101,7 @@ router.put("/:id", auth, admin, async (req, res) => {
 });
 
 // delete a spot by the admin
-router.delete("/:id", auth, admin, async (req, res) => {
+router.delete("/:id", admin, async (req, res) => {
    try {
       const spot = await Spots.findByIdAndDelete(req.params.id);
       if (!spot) return res.status(404).send("Spot not found");
@@ -110,7 +112,7 @@ router.delete("/:id", auth, admin, async (req, res) => {
    }
 
    //search by geolocation or nearby spot
-   router.get("/nearby", async (req, res) => {
+   router.get("/nearby", auth, async (req, res) => {
       try {
          const { lat, lng } = req.query;
          if (!lat || !lng) return res.status(400).send("Latitude and Longitude required");
