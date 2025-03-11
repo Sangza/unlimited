@@ -1,6 +1,6 @@
 const { default: mongoose } = require("mongoose");
 const { Users } = require("./user");
-const { Spots } = require("../model/spot")
+const { Spots } = require("../model/spot");
 
 const paymentSchema = mongoose.Schema(
   {
