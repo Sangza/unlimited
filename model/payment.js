@@ -7,7 +7,6 @@ const paymentSchema = mongoose.Schema(
     user: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
-      required: true,
     },
     amount: {
       type: Number,
@@ -20,7 +19,7 @@ const paymentSchema = mongoose.Schema(
     transactionId: {
       type: String,
       unique: true,
-      required: true,
+
     },
     spot: {
       type: mongoose.Schema.Types.ObjectId,
