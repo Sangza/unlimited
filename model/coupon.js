@@ -1,18 +1,23 @@
 const mongoose = require("mongoose");
 const { Users } = require("./user");
-const { ref } = require("joi");
-const {paymentSchema} = require('./payment');
-const {priceSchema} = require('./price');
-
+const { paymentSchema } = require("./payment");
+const { priceSchema } = require("./price");
 
 const couponSchema = new mongoose.Schema({
   coupon: {
     type: String,
     required: true,
+    unique: true, // Ensure uniqueness of coupon codes
   },
-  spot: [mongoose.Schema.Types.ObjectId],
-  price:[priceSchema],
-  paidfor: Boolean,
+  spot: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Spots",
+    required: true, // Ensure every coupon is linked to a spot
+  },
+  paidfor: {
+    type: Boolean,
+    default: false, // Default unpaid status
+  },
   duration: {
     type: String,
     required: true,
@@ -21,15 +26,20 @@ const couponSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  createdBy:{
-   type: Date
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
   user: {
     Id: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
+      default: null, // Ensure it's nullable until assigned
     },
-    paymentId: [paymentSchema]
+    paymentId: {
+      type: [paymentSchema],
+      default: [], // Default to empty array
+    },
   },
   purchase: {
     type: Date,
