@@ -7,7 +7,7 @@ const auth = require('../middlewares/auth');
 const { set } = require('mongoose');
 
 //post a price for a particular spot.
-router.post("/:id", admin, async (req, res) => {
+router.post("/:id", auth, admin, async (req, res) => {
     try {
         const spot = await Spots.findById({ _id: req.params.spotId })
         if (!spot) return res.status(400).send("spot doesn't exist");
@@ -45,7 +45,7 @@ router.get('/:id', auth, admin, async (req, res) => {
 })
 
 //update price details for a particular user
-router.put('/getupdate/:id', admin, async (req, res) => {
+router.put('/getupdate/:id', auth, admin, async (req, res) => {
     const price = await Prices.findOne({
         _id: req.params.id,
         spot: req.body.spotId
@@ -72,7 +72,7 @@ router.put('/getupdate/:id', admin, async (req, res) => {
 })
 
 //delete a particular price
-router.delete('/:id', admin, async (req, res) => {
+router.delete('/:id', auth, admin, async (req, res) => {
     const price = await Prices.findOne({
         spot: req.body.spotId,
         _id: req.params.id
