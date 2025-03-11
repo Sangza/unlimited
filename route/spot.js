@@ -21,14 +21,11 @@ router.post("/:id", auth, admin, async (req, res) => {
       source: req.body.source
    })
 
-   try {
-      const spots = await spot.save();
-      res.status(200).json({
-         message: "spot created successfully"
-      })
-   } catch (error) {
-      res.status(400).send(error.message)
-   }
+   const spots = await spot.save();
+   res.status(200).json(
+      "spot created successfully", spots
+   )
+
 })
 
 // get the number of spot of a particular user
