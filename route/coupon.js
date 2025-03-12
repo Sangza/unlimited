@@ -35,33 +35,6 @@ router.post("/", auth, admin, async (req, res) => {
   }
 });
 
-router.post("/", auth, admin, async (req, res) => {
-  try {
-    const spot = await Spots.findById({ _id: req.body.spotId });
-    if (!spot) return res.status(400).send("spot doesn't exist")
-
-
-    const couponn = await Coupons.findOne({ coupon: req.body.coupon });
-    if (couponn) return res.status(400).send("Coupon already existed");
-
-    let coupon = new Coupons({
-      coupon: req.body.coupon,
-      spot: req.body.spotId,
-      paidfor: req.body.paidfor,
-      duration: req.body.duration,
-      amount: req.body.amount,
-    });
-
-
-    await coupon.save();
-    res.status(200).send({
-      message: "created successfully",
-    });
-  } catch (error) {
-    res.status(500).send('Internal Server Error')
-  }
-});
-
 router.post("/batch", auth, admin, async (req, res) => {
   if (!Array.isArray(req.body.coupons)) {
     return res

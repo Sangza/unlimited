@@ -1,7 +1,9 @@
 const mongoose = require("mongoose");
 const { Users } = require("./user");
-const { paymentSchema } = require("./payment");
-const { priceSchema } = require("./price");
+const { ref } = require("joi");
+const { paymentSchema } = require('./payment');
+const { priceSchema } = require('./price');
+
 
 const couponSchema = new mongoose.Schema({
   coupon: {
@@ -9,14 +11,9 @@ const couponSchema = new mongoose.Schema({
     required: true,
   },
   spot: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Spots",
-    required: true, // Ensure every coupon is linked to a spot
+    type: mongoose.Schema.Types.ObjectId
   },
-  paidfor: {
-    type: Boolean,
-    default: false, // Default unpaid status
-  },
+  paidfor: Boolean,
   duration: {
     type: String,
     required: true,
@@ -25,16 +22,22 @@ const couponSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  createdBy: {
+    type: Date
   },
-  updatedAT: {
+  user: {
+    Id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Users",
+    },
+    paymentId: {
+      type: paymentSchema
+    }
+  },
+  purchase: {
     type: Date,
-    default: Date.now
   },
 });
-
 
 const Coupons = mongoose.model("Coupon", couponSchema);
 
