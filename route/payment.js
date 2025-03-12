@@ -16,7 +16,7 @@ router.post("/", auth, async (req, res) => {
     },
     amount: req.body.amount,
     transactionId: req.body.transactionId,
-    status: "successful",
+    status: req.body.status,
     spot: req.body.spotId
   });
 

@@ -30,7 +30,9 @@ const couponSchema = new mongoose.Schema({
       type: mongoose.Schema.Types.ObjectId,
       ref: "Users",
     },
-    paymentId: [paymentSchema]
+    paymentId: {
+      type: paymentSchema,
+    }
   },
   purchase: {
     type: Date,

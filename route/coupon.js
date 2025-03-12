@@ -6,6 +6,7 @@ const auth = require("../middlewares/auth");
 const admin = require("../middlewares/admin");
 const { Users } = require("../model/user");
 const { Spots } = require("../model/spot");
+const { Payments } = require("../model/payment");
 
 router.post("/", auth, admin, async (req, res) => {
   try {
@@ -123,26 +124,35 @@ router.put("/updatecoupon/:id", auth, async (req, res) => {
   const couponId = await Coupons.findById(req.params.id);
   if (!couponId) return res.status(400).send("Not Found");
 
-  const coup = await Coupons.updateOne(
-    { _id: req.params.id },
-    {
-      $set: {
-        paidfor: req.body.paidfor,
-        user: {
-          Id: req.body.userId,
-          paymentId: req.body.paymentId,
+  const payment = await Payments.findById(req.body.paymentId);
+  if (!payment) return res.status(400).send("paymentId doesn't exist")
+
+  if (couponId.amount == payment.amount) {
+    const coup = await Coupons.updateOne(
+      { _id: req.params.id },
+      {
+        $set: {
+          paidfor: req.body.paidfor,
+          user: {
+            Id: req.body.userId,
+            paymentId: {
+              status: payment.status,
+              _id: payment._id,
+              createdAt: payment.createdAt
+            },
+          },
         },
       },
-    },
-    {
-      new: true,
-    }
-  );
+      {
+        new: true,
+      }
+    );
+  }
 
   res.status(200).json({
     coupon: couponId.coupon,
     duration: couponId.duration,
-    coup,
+    status: payment.status
   });
 });
 
