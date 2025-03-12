@@ -80,18 +80,13 @@ router.post("/batch", auth, admin, async (req, res) => {
 });
 
 //coupons paid by a particular user
-router.get("/getcoupon/:spotId/:id", auth, async (req, res) => {
+router.get("/getcoupon/:id", auth, async (req, res) => {
   try {
-
-    const spot = await Spots.findById({ _id: req.params.spotId });
-    if (!spot) return res.status(400).send("spot doesn't exist")
-
     const userId = await Users.findById({ _id: req.params.id });
     if (!userId) return res.status(400).send("user doesn't exist");
 
     const userCoupon = await Coupons.find({
       "user.Id": req.params.id,
-      spot: req.params.spotId
     });
     console.log(userId);
     if (!userCoupon.length) return res.status(400).send("no coupon found");
