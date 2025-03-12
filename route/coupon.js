@@ -127,7 +127,6 @@ router.put("/updatecoupon/:id", auth, async (req, res) => {
     { _id: req.params.id },
     {
       $set: {
-        updatedAT: req.body.update,
         paidfor: req.body.paidfor,
         user: {
           Id: req.body.userId,
